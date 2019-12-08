@@ -98,6 +98,7 @@ body {
     /*
      * Add some spacing around the footer.
      */
+    font-size: 11px;
     margin-top: 2em;
     position: absolute;
     bottom: 0;
@@ -108,6 +109,7 @@ body {
 }
 @media (max-width: 1024px){
   .mainFooter{
+    font-size: 12px;
     height: 60px;
   }
 }
