@@ -304,7 +304,11 @@
     margin-left: 10px;
     width: 20px;
 }
-
+.project-title a{
+    display: block;
+    float: left;
+    width:90%;
+}
 .btn-small {
     height: 16px !important;
     width: 16px !important;
@@ -526,7 +530,7 @@
 .collapse-content ul li {
     background: #ffffff;
     border-bottom: 1px solid #dfe3e9;
-    display: block;
+    display: flex;
     overflow: hidden;
     padding-left: 5px;
 }
@@ -534,10 +538,10 @@
 .collapse-content ul li .project-title,
 .collapse-content ul li .tender,
 .collapse-content ul li .award {
-    display: block;
     font-size: 11px;
     padding-bottom: 3px;
     padding-top: 6px;
+    flex: auto;
 }
 
 .project-details .status {

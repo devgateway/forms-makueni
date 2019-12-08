@@ -96,13 +96,13 @@ export default class Header extends translatable(React.Component) {
     const jsonURL = new URI('/api/ocds/package/all');
 
     return (<div>
-        <span className="export-title">
+        <span className="help-title">
           <a onClick={()=> {
             this.showIntroJs();
           }
           }>HELP</a>
         </span>
-        <span className="export-title" data-step="7" data-intro="Download the data in either XLS,
+        <span className="download-title" data-step="7" data-intro="Download the data in either XLS,
         which uses the standard government terminology, or in JSON which uses the Open Contracting
          Data Standard.">
           Download the Data
