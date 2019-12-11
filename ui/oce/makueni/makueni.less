@@ -2,6 +2,7 @@
 @active-tab-color: #204e6e;
 @border-grey: #f6f6f6;
 @lightest-grey: #f9f9f9;
+@extend: 100%;
 
 .tender {
     .navigation-view {
@@ -67,7 +68,7 @@
                 display: block;
                 float: left;
                 font-size: 15px;
-                line-height: 200%;
+                line-height: @extend * 2;
             }
         }
 
@@ -142,7 +143,7 @@
         }
         @media screen and (max-width: 768px) {
             overflow-x: scroll;
-            overflow-y: visible;
+            padding-bottom: 100px;
             padding-top: 30px;
         }
     }
@@ -341,7 +342,7 @@
                 font-weight: bold;
                 @media screen and (max-width: 1024px) {
                     display: block;
-                    line-height: 100%;
+                    line-height: @extend;
                     margin-top: -4px;
                 }
             }
@@ -435,7 +436,7 @@
                 }
 
                 .checkbox {
-                    width: 100%;
+                    width: @extend;
                 }
             }
         }
@@ -466,9 +467,10 @@
         @media screen and (max-width: 1024px) {
             background: #ffffff;
         }
-        @media screen and (max-width: 600px) {
+        @media screen and (max-width: 768px) {
             overflow-x: scroll;
             padding-top: 30px;
+            width: @extend * 2;
         }
     }
 
@@ -494,7 +496,8 @@
     font-size: 16px;
     padding-left: 10px;
     @media screen and (max-width: 767px) {
-      font-size: 12px;
+      font-size: 10px;
+      padding-left: 0;
     }
 }
 
@@ -512,7 +515,8 @@ a.more-details-link {
     padding-right: 10px;
     padding-left: 0;
     @media screen and (max-width: 767px) {
-      font-size: 12px;
+      font-size: 10px;
+      font-weight: 500;
     }
 }
 
@@ -553,7 +557,7 @@ a.more-details-link:hover::before {
 
 .rc-slider {
     margin-left: 5%;
-    width: 90%;
+    width: @extend - 10;
 
     .rc-slider-track {
         background-color: @active-tab-color;
@@ -573,6 +577,11 @@ a.more-details-link:hover::before {
 .react-bs-table-bordered {
     border-radius: 0;
     border: 1px solid transparent;
+    td:first-of-type{
+      @media screen and (max-width: 600px) {
+          width: @extend + 50;
+      }
+    }
 }
 
 .table-bordered,
@@ -590,13 +599,13 @@ a.more-details-link:hover::before {
     bottom: 0;
     left: 0;
     height: 100px;
-    width: 25%;
+    width: @extend / 4;
     margin-right: 0;
     margin-left: 0;
     z-index: 10;
 
     .alerts-button {
-        height: 100%;
+        height: @extend;
         margin-left: 5px;
         .btn {
             background-color: @active-tab-color;
@@ -610,7 +619,7 @@ a.more-details-link:hover::before {
       &.subscribe{
         .btn-lg{
           @media screen and (max-width: 767px) {
-            font-size: 15px
+            font-size: 12px
           }
         }
       }
