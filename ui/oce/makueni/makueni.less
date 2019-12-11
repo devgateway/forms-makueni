@@ -1,11 +1,12 @@
 @active-text-color: #29722d;
 @active-tab-color: #204e6e;
 @border-grey: #f6f6f6;
+@lightest-grey: #f9f9f9;
 
 .tender {
     .navigation-view {
         overflow: hidden;
-        background-color: #F9F9F9;
+        background-color: @lightest-grey;
 
         a {
             display: table-cell;
@@ -20,7 +21,7 @@
             font-size: 14px;
             text-align: center;
             font-weight: bold;
-            border-bottom: 3px solid #F9F9F9;
+            border-bottom: 3px solid @lightest-grey;
 
             &:hover {
                 color: @active-tab-color;
@@ -131,7 +132,7 @@
 .makueni-procurement-plan {
     .content {
         @media screen and (max-width: 1024px) {
-            background: #f9f9f9;
+            background: @lightest-grey;
         }
     }
 
@@ -139,14 +140,15 @@
         @media screen and (max-width: 1024px) {
             background: #ffffff;
         }
-        @media screen and (max-width: 600px) {
+        @media screen and (max-width: 768px) {
             overflow-x: scroll;
+            overflow-y: visible;
             padding-top: 30px;
         }
     }
 
     a.download-file {
-        color: #29722d;
+        color: @active-text-color;
         cursor: pointer;
         text-decoration: none;
         font-weight: bold;
@@ -162,7 +164,7 @@
 }
 
 .filters {
-    background: #F9F9F9;
+    background: @lightest-grey;
     //position: fixed;
 
     .filters-hint {
@@ -179,7 +181,7 @@
     }
 
     .btn-apply {
-        background-color: #29722d;
+        background-color: @active-text-color;
         color: white;
         margin-left: 10px !important;
         margin-bottom: @base-space / 2;
@@ -442,7 +444,7 @@
 
 .charts-content {
     @media screen and (max-width: 1024px) {
-        background: #f9f9f9;
+        background: @lightest-grey;
     }
 
     .col-main-content {
@@ -456,7 +458,7 @@
 .makueni-tenders {
     .content {
         @media screen and (max-width: 1024px) {
-            background: #f9f9f9;
+            background: @lightest-grey;
         }
     }
 
@@ -471,7 +473,7 @@
     }
 
     a.download-file {
-        color: #29722d;
+        color: @active-text-color;
         cursor: pointer;
         text-decoration: none;
         font-weight: bold;
@@ -482,7 +484,7 @@
     }
 
     .glyphicon {
-        color: #29722d;
+        color: @active-text-color;
         margin-right: 5px;
     }
 }
@@ -491,6 +493,9 @@
     color: #666666;
     font-size: 16px;
     padding-left: 10px;
+    @media screen and (max-width: 767px) {
+      font-size: 12px;
+    }
 }
 
 a.more-details-link {
@@ -499,16 +504,16 @@ a.more-details-link {
     font-weight: 700;
     line-height: 120%;
     text-decoration: none;
-
     position: relative;
     z-index: 1;
     display: inline-flex;
-
     padding-left: 10px;
     padding-bottom: 5px;
     padding-right: 10px;
     padding-left: 0;
-
+    @media screen and (max-width: 767px) {
+      font-size: 12px;
+    }
 }
 
 a.more-details-link:hover {
@@ -532,7 +537,7 @@ a.more-details-link:hover::before {
     a {
         cursor: pointer;
         text-decoration: none;
-        color: #29722d;
+        color: @active-text-color;
 
         &:hover {
             color: @active-tab-color;
@@ -603,8 +608,10 @@ a.more-details-link:hover::before {
             }
         }
       &.subscribe{
-        @media screen and (max-width: 767px) {
-          display: none;
+        .btn-lg{
+          @media screen and (max-width: 767px) {
+            font-size: 15px
+          }
         }
       }
     }
