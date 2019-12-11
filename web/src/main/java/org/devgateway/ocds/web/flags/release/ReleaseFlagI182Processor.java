@@ -36,7 +36,10 @@ public class ReleaseFlagI182Processor extends AbstractFlaggedReleaseFlagProcesso
                 .stream()
                 .filter(d -> d.getValue() != null)
                 .min(Comparator.comparing(d -> d.getValue().getAmount()))
-                .get();
+                .orElse(null);
+        if (minBid == null) {
+            return false;
+        }
         Boolean b = minBid.getStatus().equals("disqualified");
         if (b) {
             rationale.append("Bidder ").append(minBid.getTenderers().iterator().next())

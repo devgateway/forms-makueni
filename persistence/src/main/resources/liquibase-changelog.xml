@@ -883,4 +883,14 @@
         </update>
     </changeSet>
 
+    <changeSet id="OCMAKU-465" author="mpostelnicu">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="BID"/>
+        </preConditions>
+        <update tableName="BID">
+            <column name="quoted_amount" value="null"/>
+            <where>quoted_amount=0</where>
+        </update>
+    </changeSet>
+
 </databaseChangeLog>

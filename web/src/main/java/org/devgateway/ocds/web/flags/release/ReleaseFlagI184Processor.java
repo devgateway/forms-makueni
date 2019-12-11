@@ -40,6 +40,9 @@ public class ReleaseFlagI184Processor extends AbstractFlaggedReleaseFlagProcesso
     protected Boolean calculateFlag(FlaggedRelease flaggable, StringBuffer rationale) {
         Contract contract = flaggable.getContracts().iterator().next();
         Award award = flaggable.getAwards().iterator().next();
+        if (BigDecimal.ZERO.equals(award.getValue().getAmount())) {
+            return false;
+        }
         BigDecimal ratio = contract.getValue().getAmount().divide(award.getValue().getAmount(), mc);
         rationale.append("Contract value ").append(contract.getValue().getAmount())
                 .append(" Award value ").append(award.getValue().getAmount()).append(" Ratio ").append(ratio)

@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.devgateway.toolkit</groupId>
         <artifactId>makueni</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <version>1.6.4-SNAPSHOT</version>
     </parent>
 
 
