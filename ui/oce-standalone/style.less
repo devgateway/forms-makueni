@@ -541,8 +541,12 @@ footer.main-footer {
     height: 64px;
     margin-right: 15px;
     padding: 0;
+    @media screen and (max-width: 1024px) {
+        margin-right: 0;
+    }
     @media screen and (max-width: 600px) {
         float: none;
+        margin-right: 15px;
     }
 
     .export-title {
