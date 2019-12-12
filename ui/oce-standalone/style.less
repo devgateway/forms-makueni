@@ -65,6 +65,9 @@ header.branding {
     top: @headerHeight;
     height: @headerHeight;
     z-index: 1001;
+    @media screen and (max-width: 767px) {
+      height:100px;
+    }
     @media screen and (max-width: 414px) {
         height: 130px;
         padding-top: 5px;
