@@ -13,7 +13,8 @@
 @hover-blue: #3090bd;
 @color-regular-gray: #8d8d8d;
 @base-space: 20px;
-
+@base-space-sm: 10px;
+@extend: 100%;
 
 .content {
     margin-top: @headerHeight * 2;
@@ -24,7 +25,7 @@
     }
     @media screen and (max-width: 600px) {
         background-color: #ffffff;
-        margin-top: 300px;
+        margin-top: 280px;
     }
 }
 
@@ -65,11 +66,8 @@ header.branding {
     top: @headerHeight;
     height: @headerHeight;
     z-index: 1001;
-    @media screen and (max-width: 767px) {
-      height:100px;
-    }
-    @media screen and (max-width: 414px) {
-        height: 130px;
+    @media screen and (max-width: 600px) {
+        height: 100px;
         padding-top: 5px;
         top: 120px;
     }
@@ -84,19 +82,19 @@ header.branding {
         color: #1088cb;
         font-size: @filtersFontSize;
         font-weight: bold;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: @base-space-sm;
+        padding-bottom: @base-space-sm;
     }
 
     .buttons {
-        margin-top: @base-space / 2;
+        margin-top: @base-space-sm;
     }
 
     .btn-apply {
         background-color: @themeGreen;
         color: white;
-        margin-left: 10px !important;
-        margin-bottom: @base-space / 2;
+        margin-left: @base-space-sm !important;
+        margin-bottom: @base-space-sm;
         min-width: 100px;
 
         &:hover {
@@ -193,7 +191,7 @@ header.branding {
                 font-weight: bold;
                 @media screen and (max-width: 1024px) {
                     display: block;
-                    line-height: 100%;
+                    line-height: @extend;
                     margin-top: -4px;
                 }
             }
@@ -203,12 +201,12 @@ header.branding {
                 background-repeat: no-repeat;
                 background-size: 10px 10px;
                 background-position: center;
-                width: 10px;
-                height: 20px;
+                width: @base-space-sm;
+                height: @base-space;
                 display: block;
                 @media screen and (max-width: 1024px) {
                     background-size: 15px 15px;
-                    height: 20px;
+                    height: @base-space;
                     width: 15px;
                 }
 
@@ -237,14 +235,14 @@ header.branding {
                 color: #639a66;
                 font-size: 18px;
                 margin-left: 6px;
-                margin-right: 10px;
+                margin-right: @base-space-sm;
                 padding-top: 3px;
             }
         }
 
         .field {
             header {
-                padding-top: @base-space / 2;
+                padding-top: @base-space-sm;
             }
 
             .type-ahead {
@@ -254,7 +252,7 @@ header.branding {
                 }
 
                 .search {
-                    margin-top: 10px;
+                    margin-top: @base-space-sm;
                     border-radius: 0;
 
                     &:focus {
@@ -271,12 +269,12 @@ header.branding {
                 .result-count {
                     background-color: #a1a1a1;
                     color: #eee;
-                    padding: 5px 10px;
+                    padding: @base-space-sm / 2 @base-space-sm;
                     font-size: 11px;
                 }
 
                 .checkbox {
-                    width: 100%;
+                    width: @extend;
                 }
             }
         }
@@ -284,7 +282,7 @@ header.branding {
         .compare {
             .compare-content {
                 margin-top: @base-space / 1.5;
-                margin-bottom: @base-space / 2;
+                margin-bottom: @base-space-sm;
             }
         }
     }
@@ -311,16 +309,29 @@ aside {
 .date-filter {
     .years-bar, .months-bar {
         color: #333;
-        height: @yearsBarHeight;
+        @media screen and (max-width: 1024px) {
+          margin-left: @base-space-sm;
+        }
 
         a {
             background-color: #e6e6e6;
             color: #bbbbbb;
             text-decoration: none;
-            padding: 5px 0 5px 10px;
+            padding: 5px 0 5px @base-space-sm;
             border-right: 2px #f2f2f2 solid;
             line-height: 28px;
             margin-bottom: 3px;
+            @media screen and (max-width: 1024px) {
+              display: block;
+              float: left;
+              width: 30%;
+            }
+            @media screen and (max-width: 768px) {
+              width: @extend / 5;
+            }
+            @media screen and (max-width: 414px) {
+              width: 30%;
+            }
 
             &:hover {
                 background-color: #707070;
@@ -341,7 +352,7 @@ aside {
         }
 
         a:last-child .ctrl-click-hint {
-            right: 10px;
+            right: @base-space-sm;
         }
 
         a:hover .ctrl-click-hint {
@@ -354,8 +365,8 @@ aside {
     }
 
     .hint {
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: @base-space-sm;
+        padding-bottom: @base-space-sm;
     }
 
     .ctrl-click-hint {
@@ -376,9 +387,8 @@ footer.main-footer {
     background: @footerColor;
     padding-top: 7px;
     z-index: 1;
-    @media screen and (max-width: 767px) {
-      height: 60px;
-      position:relative;
+    @media screen and (max-width: 320px) {
+        display: none;
     }
 }
 
@@ -400,7 +410,7 @@ footer.main-footer {
             @media screen and (max-width: 600px) {
                 display: block;
                 float: left;
-                width: 50%;
+                width: @extend / 2;
             }
 
             &:hover, &.active {
@@ -497,7 +507,7 @@ footer.main-footer {
 
 .dashboard-hint {
     text-transform: none;
-    margin-top: 10px;
+    margin-top: @base-space-sm;
 }
 
 .login-logout, .export-btn {
@@ -544,12 +554,8 @@ footer.main-footer {
     height: 64px;
     margin-right: 15px;
     padding: 0;
-    @media screen and (max-width: 1024px) {
-        margin-right: 0;
-    }
     @media screen and (max-width: 600px) {
         float: none;
-        margin-right: 15px;
     }
 
     .export-title {
@@ -639,7 +645,7 @@ a.portal-logo-wrapper {
     }
 
     span {
-        padding-left: 10px;
+        padding-left: @base-space-sm;
         color: #fff;
         line-height: 20px;
         font-weight: lighter !important;
@@ -650,7 +656,7 @@ a.portal-logo-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 10px;
+    padding-top: @base-space-sm;
 
     img {
         width: 32px;
@@ -661,7 +667,7 @@ a.portal-logo-wrapper {
 
 .makueni-tenders {
     .react-bs-table-pagination {
-        margin-bottom: 10px;
+        margin-bottom: @base-space-sm;
 
         .btn {
             border: 2px solid transparent;
