@@ -7,4 +7,5 @@ import org.devgateway.toolkit.persistence.dao.form.MEReport;
  */
 public interface MEReportService extends AbstractImplTenderProcessMakueniEntityService<MEReport> {
 
+    void onApproved(MEReport report);
 }

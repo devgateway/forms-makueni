@@ -2,21 +2,29 @@ package org.devgateway.toolkit.persistence.service.sms;
 
 import org.apache.commons.lang3.StringUtils;
 import org.devgateway.toolkit.persistence.dao.DBConstants;
+import org.devgateway.toolkit.persistence.dao.alerts.AlertsSubscription;
+import org.devgateway.toolkit.persistence.dao.alerts.ApprovedReport;
+import org.devgateway.toolkit.persistence.dao.categories.SubWard;
 import org.devgateway.toolkit.persistence.dao.feedback.ReplyableFeedbackMessage;
 import org.devgateway.toolkit.persistence.dao.form.MEReport;
 import org.devgateway.toolkit.persistence.dao.form.PMCReport;
+import org.devgateway.toolkit.persistence.dao.form.Tender;
 import org.devgateway.toolkit.persistence.dao.form.TenderProcess;
 import org.devgateway.toolkit.persistence.dao.sms.SMSMessage;
+import org.devgateway.toolkit.persistence.repository.alerts.ApprovedReportRepository;
 import org.devgateway.toolkit.persistence.repository.norepository.BaseJpaRepository;
 import org.devgateway.toolkit.persistence.repository.sms.SMSMessageRepository;
 import org.devgateway.toolkit.persistence.service.BaseJpaServiceImpl;
+import org.devgateway.toolkit.persistence.service.alerts.AlertsSubscriptionService;
 import org.devgateway.toolkit.persistence.service.feedback.ReplyableFeedbackMessageService;
 import org.devgateway.toolkit.persistence.service.form.TenderProcessService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,11 +38,17 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 import static org.devgateway.toolkit.persistence.dao.DBConstants.SMSCommands.INFO;
 import static org.devgateway.toolkit.persistence.dao.DBConstants.SMSCommands.REPORT;
@@ -59,6 +73,19 @@ public class SMSMessageServiceImpl extends BaseJpaServiceImpl<SMSMessage> implem
 
     @Autowired
     private ReplyableFeedbackMessageService replyableFeedbackMessageService;
+
+    @Autowired
+    private ApprovedReportRepository approvedReportRepository;
+
+    @Autowired
+    private AlertsSubscriptionService alertsSubscriptionService;
+
+    @Autowired
+    private OnfonMediaClient onfonMediaClient;
+
+    @Autowired
+    @Qualifier("smsAlerts")
+    private MessageSource messageSource;
 
     @Override
     protected BaseJpaRepository<SMSMessage, Long> repository() {
@@ -232,6 +259,91 @@ public class SMSMessageServiceImpl extends BaseJpaServiceImpl<SMSMessage> implem
             sendSMS(message.getFrom(), sb.toString());
         }
         return true;
+    }
+
+    @Override
+    @Scheduled(cron = "0 */10 * * * ?")
+    @Transactional
+    public void processAlertsQueue() {
+
+        logger.info("processAlertsQueue");
+
+        List<ApprovedReport> updates = approvedReportRepository.findByProcessedIsFalse();
+
+        List<AlertsSubscription> subs = alertsSubscriptionService.findAll();
+
+        List<Message> messages = subs.stream()
+                .flatMap(sub -> getAlertsForSub(updates, sub).stream())
+                .collect(Collectors.toList());
+
+        if (!messages.isEmpty()) {
+            onfonMediaClient.sendBulkSMS(messages);
+        }
+
+        updates.forEach(u -> u.setProcessed(true));
+    }
+
+    private List<Message> getAlertsForSub(List<ApprovedReport> updates, AlertsSubscription sub) {
+        List<Message> messages = new ArrayList<>();
+
+        List<MEReport> meReports = new ArrayList<>();
+        List<PMCReport> pmcReports = new ArrayList<>();
+        List<Tender> tenders = new ArrayList<>();
+
+        Locale locale = new Locale(sub.getLanguage());
+
+        updates.forEach(upd -> {
+            if (upd.getMeReport() != null && matches(upd.getMeReport(), sub)) {
+                meReports.add(upd.getMeReport());
+                tenders.add(upd.getMeReport().getTenderProcess().getSingleTender());
+            }
+
+            if (upd.getPmcReport() != null && matches(upd.getPmcReport(), sub)) {
+                pmcReports.add(upd.getPmcReport());
+                tenders.add(upd.getPmcReport().getTenderProcess().getSingleTender());
+            }
+        });
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        for (Tender tender : tenders) {
+            StringJoiner text = new StringJoiner("\n");
+
+            text.add(String.format("%s: %s", getMessage(locale, "tenderName"), tender.getTitle()));
+
+            meReports.stream()
+                    .filter(r -> r.getTenderProcess().getSingleTender().equals(tender))
+                    .forEach(r -> text.add(String.format("%s [%s]: %s",
+                            getMessage(locale, "meReportStatus"),
+                            sdf.format(r.getApprovedDate()),
+                            getMessage(locale, "meReportStatus." + r.getMeStatus().getCode()))));
+
+            pmcReports.stream()
+                    .filter(r -> r.getTenderProcess().getSingleTender().equals(tender))
+                    .forEach(r -> text.add(String.format("%s [%s]: %s",
+                            getMessage(locale, "pmcReportStatus"),
+                            sdf.format(r.getApprovedDate()),
+                            getMessage(locale, "pmcReportStatus." + r.getPmcStatus().getCode()))));
+
+            messages.add(new Message(sub.getMsisdn(), text.toString()));
+        }
+
+        return messages;
+    }
+
+    private String getMessage(Locale locale, String code) {
+        return messageSource.getMessage(code, null, locale);
+    }
+
+    private boolean matches(MEReport r, AlertsSubscription sub) {
+        return r.getSubwards().stream().map(SubWard::getWard).anyMatch(sub::includes)
+                || r.getWards().stream().anyMatch(sub::includes)
+                || r.getSubcounties().stream().anyMatch(sub::includes);
+    }
+
+    private boolean matches(PMCReport r, AlertsSubscription sub) {
+        return r.getWards().stream().anyMatch(sub::includes)
+                || r.getSubcounties().stream().anyMatch(sub::includes);
     }
 }
 

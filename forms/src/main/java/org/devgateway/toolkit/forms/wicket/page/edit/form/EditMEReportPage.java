@@ -155,4 +155,9 @@ public class EditMEReportPage extends EditAbstractImplTenderProcessEntityPage<ME
         return null;
     }
 
+    @Override
+    protected void onApproved() {
+        super.onApproved();
+        service.onApproved(editForm.getModelObject());
+    }
 }

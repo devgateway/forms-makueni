@@ -188,4 +188,9 @@ public class EditPMCReportPage extends EditAbstractImplTenderProcessEntityPage<P
         return null;
     }
 
+    @Override
+    protected void onApproved() {
+        super.onApproved();
+        service.onApproved(editForm.getModelObject());
+    }
 }

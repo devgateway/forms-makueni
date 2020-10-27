@@ -72,6 +72,14 @@ public class AlertsSubscription extends AbstractAuditableEntity {
         this.subcounties = subcounties;
     }
 
+    public boolean includes(Ward ward) {
+        return wards.contains(ward) || includes(ward.getSubcounty());
+    }
+
+    public boolean includes(Subcounty subcounty) {
+        return subcounties.contains(subcounty);
+    }
+
     @Override
     public AbstractAuditableEntity getParent() {
         return null;

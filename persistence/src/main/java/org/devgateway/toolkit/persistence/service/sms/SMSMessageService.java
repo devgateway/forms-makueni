@@ -28,6 +28,8 @@ public interface SMSMessageService extends BaseJpaService<SMSMessage> {
 
     boolean sendSMS(String destination, String text);
 
+    void processAlertsQueue();
+
     void processAndPersistSMSResult(SMSMessage m);
 
 }
