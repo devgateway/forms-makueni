@@ -1196,4 +1196,15 @@
         </update>
     </changeSet>
 
+    <changeSet id="OCMAKU-727-rename" author="Octavian Ciubotaru">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="CATEGORY" />
+        </preConditions>
+
+        <update tableName="CATEGORY">
+            <column name="label" value="Completed to scope"/>
+            <where>dtype='MEStatus' and label='Completed not in use'</where>
+        </update>
+    </changeSet>
+
 </databaseChangeLog>

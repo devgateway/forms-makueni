@@ -449,7 +449,7 @@ public class MakueniToOCDSConversionServiceImpl implements MakueniToOCDSConversi
     }
 
     public Milestone.Status createMeReportMilestoneStatus(MEReport report) {
-        return meMilestoneMap.get(report.getMeStatus().getLabel());
+        return meMilestoneMap.get(report.getMeStatus().getCode());
     }
 
     @PostConstruct
@@ -470,12 +470,12 @@ public class MakueniToOCDSConversionServiceImpl implements MakueniToOCDSConversi
                 .put("Open Tender - International", Tender.ProcurementMethod.open).build();
 
         meMilestoneMap = ImmutableMap.<String, Milestone.Status>builder()
-                .put("Completed not in use", Milestone.Status.NOT_MET)
-                .put("Complete in use", Milestone.Status.MET)
-                .put("Ongoing", Milestone.Status.NOT_MET)
-                .put("Not started", Milestone.Status.NOT_MET)
-                .put("Stalled", Milestone.Status.NOT_MET)
-                .put("Delayed", Milestone.Status.NOT_MET)
+                .put("completedNotInUse", Milestone.Status.MET)
+                .put("completeInUse", Milestone.Status.MET)
+                .put("ongoing", Milestone.Status.NOT_MET)
+                .put("notStarted", Milestone.Status.NOT_MET)
+                .put("stalled", Milestone.Status.NOT_MET)
+                .put("delayed", Milestone.Status.NOT_MET)
                 .build();
     }
 
