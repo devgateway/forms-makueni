@@ -1155,6 +1155,7 @@
     <changeSet id="OCMAKU-725-sms-alerts" author="Octavian Ciubotaru">
         <preConditions onFail="CONTINUE">
             <tableExists tableName="CATEGORY" />
+            <columnExists tableName="CATEGORY" columnName="code" />
         </preConditions>
 
         <update tableName="CATEGORY">
@@ -1194,6 +1195,17 @@
             <column name="code" value="offTrack"/>
             <where>dtype='PMCStatus' and label='Off Track'</where>
         </update>
+    </changeSet>
+
+    <changeSet id="OCMAKU-725-sms-alerts-2" author="Octavian Ciubotaru">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="approved_report" />
+        </preConditions>
+        <sql><![CDATA[
+            ALTER TABLE approved_report
+            ADD CONSTRAINT non_null_report
+            CHECK ((me_report_id IS NULL) != (pmc_report_id IS NULL));
+        ]]></sql>
     </changeSet>
 
     <changeSet id="OCMAKU-727-rename" author="Octavian Ciubotaru">

@@ -39,8 +39,8 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -284,51 +284,55 @@ public class SMSMessageServiceImpl extends BaseJpaServiceImpl<SMSMessage> implem
     }
 
     private List<Message> getAlertsForSub(List<ApprovedReport> updates, AlertsSubscription sub) {
-        List<Message> messages = new ArrayList<>();
-
-        List<MEReport> meReports = new ArrayList<>();
-        List<PMCReport> pmcReports = new ArrayList<>();
-        List<Tender> tenders = new ArrayList<>();
-
         Locale locale = new Locale(sub.getLanguage());
+
+        return getTenderUpdatesForSub(updates, sub).stream()
+                .map(tu -> createAlert(sub, locale, tu))
+                .collect(Collectors.toList());
+    }
+
+    private Collection<TenderUpdates> getTenderUpdatesForSub(List<ApprovedReport> updates, AlertsSubscription sub) {
+        Map<Tender, TenderUpdates> tenderUpdates = new HashMap<>();
 
         updates.forEach(upd -> {
             if (upd.getMeReport() != null && matches(upd.getMeReport(), sub)) {
-                meReports.add(upd.getMeReport());
-                tenders.add(upd.getMeReport().getTenderProcess().getSingleTender());
+                Tender tender = upd.getMeReport().getTenderProcess().getSingleTender();
+                tenderUpdates.computeIfAbsent(tender, TenderUpdates::new).getMeReports().add(upd.getMeReport());
             }
 
             if (upd.getPmcReport() != null && matches(upd.getPmcReport(), sub)) {
-                pmcReports.add(upd.getPmcReport());
-                tenders.add(upd.getPmcReport().getTenderProcess().getSingleTender());
+                Tender tender = upd.getPmcReport().getTenderProcess().getSingleTender();
+                tenderUpdates.computeIfAbsent(tender, TenderUpdates::new).getPmcReports().add(upd.getPmcReport());
             }
         });
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return tenderUpdates.values();
+    }
 
-        for (Tender tender : tenders) {
-            StringJoiner text = new StringJoiner("\n");
+    private Message createAlert(AlertsSubscription sub, Locale locale, TenderUpdates tenderUpdates) {
+        StringJoiner text = new StringJoiner("\n");
 
-            text.add(String.format("%s: %s", getMessage(locale, "tenderName"), tender.getTitle()));
+        Tender tender = tenderUpdates.getTender();
 
-            meReports.stream()
-                    .filter(r -> r.getTenderProcess().getSingleTender().equals(tender))
-                    .forEach(r -> text.add(String.format("%s [%s]: %s",
-                            getMessage(locale, "meReportStatus"),
-                            sdf.format(r.getApprovedDate()),
-                            getMessage(locale, "meReportStatus." + r.getMeStatus().getCode()))));
+        text.add(String.format("%s: %s", getMessage(locale, "tenderName"), tender.getTitle()));
 
-            pmcReports.stream()
-                    .filter(r -> r.getTenderProcess().getSingleTender().equals(tender))
-                    .forEach(r -> text.add(String.format("%s [%s]: %s",
-                            getMessage(locale, "pmcReportStatus"),
-                            sdf.format(r.getApprovedDate()),
-                            getMessage(locale, "pmcReportStatus." + r.getPmcStatus().getCode()))));
+        SimpleDateFormat sdf = new SimpleDateFormat(DBConstants.DATE_FORMAT);
 
-            messages.add(new Message(sub.getMsisdn(), text.toString()));
-        }
+        tenderUpdates.getMeReports().stream()
+                .filter(r -> r.getTenderProcess().getSingleTender().equals(tender))
+                .forEach(r -> text.add(String.format("%s [%s]: %s",
+                        getMessage(locale, "meReportStatus"),
+                        sdf.format(r.getApprovedDate()),
+                        getMessage(locale, "meReportStatus." + r.getMeStatus().getCode()))));
 
-        return messages;
+        tenderUpdates.getPmcReports().stream()
+                .filter(r -> r.getTenderProcess().getSingleTender().equals(tender))
+                .forEach(r -> text.add(String.format("%s [%s]: %s",
+                        getMessage(locale, "pmcReportStatus"),
+                        sdf.format(r.getApprovedDate()),
+                        getMessage(locale, "pmcReportStatus." + r.getPmcStatus().getCode()))));
+
+        return new Message(sub.getMsisdn(), text.toString());
     }
 
     private String getMessage(Locale locale, String code) {
