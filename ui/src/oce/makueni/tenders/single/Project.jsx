@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useImmer } from 'use-immer';
+import { useParams } from 'react-router-dom';
 import { Item } from './Item';
 import fmConnect from '../../../fm/fm';
 import FileDownloadLinks from './FileDownloadLinks';
@@ -13,10 +14,11 @@ const Project = (props) => {
   const { navigate, isFeatureVisible } = props;
   const { currencyFormatter, formatDate } = props.styling.tables;
   const t = tCreator(props.translations);
+  const { id } = useParams();
 
   useEffect(() => {
-    getProject({ id: props.id }).then(setImmer(updateData));
-  });
+    getProject({ id }).then(setImmer(updateData));
+  }, []);
 
   // eslint-disable-next-line no-unused-vars
   const getFeedbackSubject = () => {
@@ -99,7 +101,6 @@ const Project = (props) => {
 };
 
 Project.propTypes = {
-  id: PropTypes.number.isRequired,
   navigate: PropTypes.func.isRequired,
   isFeatureVisible: PropTypes.func.isRequired,
   styling: PropTypes.object.isRequired,

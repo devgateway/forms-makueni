@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useImmer } from 'use-immer';
 import Tender from './Tender';
@@ -25,7 +26,8 @@ const PurchaseReqView = (props) => {
   const [visibleTabs, setVisibleTabs] = useState([]);
 
   const [data, updateData] = useImmer(undefined);
-  const { id, navigate, isFeatureVisible } = props;
+  const { id } = useParams();
+  const { navigate, isFeatureVisible } = props;
   const t = tCreator(props.translations);
 
   const maybeTrimOcidPrefix = (id) => {
@@ -311,7 +313,6 @@ const PurchaseReqView = (props) => {
 };
 
 PurchaseReqView.propTypes = {
-  id: PropTypes.string.isRequired,
   navigate: PropTypes.func.isRequired,
   isFeatureVisible: PropTypes.func.isRequired,
   styling: PropTypes.object.isRequired,

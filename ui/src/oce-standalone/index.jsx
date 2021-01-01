@@ -1,5 +1,12 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+
 import ViewSwitcher from '../oce/switcher';
 import './style.scss';
 import OCEMakueni from './oceMakueni';
@@ -28,6 +35,17 @@ const translations = {
 };
 
 enableMapSet();
+
+class DebugRouter extends Router {
+  constructor(props) {
+    super(props);
+    console.log('initial history is: ', JSON.stringify(this.history, null, 2));
+    this.history.listen((location, action) => {
+      console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`);
+      console.log(`The last navigation action was ${action}`, JSON.stringify(this.history, null, 2));
+    });
+  }
+}
 
 const BILLION = 1000000000;
 const MILLION = 1000000;
@@ -108,10 +126,22 @@ OceSwitcher.views.crd = CorruptionRickDashboard;
 
 ReactDOM.render(
   <Provider store={store}>
-    <OceSwitcher
-      translations={translations.en_US}
-      styling={styling}
-    />
+    <DebugRouter>
+      <Switch>
+        <Route path="/ui/publication-policy">
+          <PublicationPolicy
+              translations={translations.en_US}
+              styling={styling}
+          />
+        </Route>
+        <Route path="/ui/tender">
+          <MakueniTenders
+              translations={translations.en_US}
+              styling={styling}
+          />
+        </Route>
+      </Switch>
+    </DebugRouter>
   </Provider>,
   document.getElementById('dg-container'),
 );

@@ -196,7 +196,6 @@ const Header = (props) => {
 Header.propTypes = {
   translations: PropTypes.object.isRequired,
   selected: PropTypes.string,
-  onSwitch: PropTypes.func.isRequired,
   styling: PropTypes.object.isRequired,
 };
 
