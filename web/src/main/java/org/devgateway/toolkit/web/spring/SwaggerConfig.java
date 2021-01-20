@@ -3,13 +3,19 @@ package org.devgateway.toolkit.web.spring;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.ZonedDateTime;
+
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @ConditionalOnProperty("apiDocs")
@@ -18,14 +24,25 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
     @Bean
     public Docket ocDashboardsApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("1ocDashboardsApi").apiInfo(ocDashboardsApiInfo())
-                .select().apis(RequestHandlerSelectors.any()).paths(regex("/api/.*")).build();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("1ocDashboardsApi")
+                .apiInfo(ocDashboardsApiInfo())
+                .select().apis(RequestHandlerSelectors.any()).paths(regex("/api/.*"))
+                .build();
+        docket.ignoredParameterTypes(ModelAndView.class, RedirectAttributes.class,
+                HttpServletRequest.class, HttpServletResponse.class);
+        docket.directModelSubstitute(ZonedDateTime.class, java.util.Date.class);
+        return docket;
+
     }
 
     @Bean
     public Docket manageApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("2manageApi")
+        Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("2manageApi")
                 .select().apis(RequestHandlerSelectors.any()).paths(regex("/manage/.*")).build();
+        docket.ignoredParameterTypes(ModelAndView.class, RedirectAttributes.class,
+                HttpServletRequest.class, HttpServletResponse.class);
+        docket.directModelSubstitute(ZonedDateTime.class, java.util.Date.class);
+        return docket;
     }
 
     private ApiInfo ocDashboardsApiInfo() {

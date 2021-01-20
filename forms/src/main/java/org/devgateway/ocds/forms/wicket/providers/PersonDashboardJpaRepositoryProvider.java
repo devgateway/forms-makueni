@@ -42,7 +42,7 @@ public class PersonDashboardJpaRepositoryProvider extends SortableJpaServiceData
         int page = (int) ((double) first / WebConstants.PAGE_SIZE);
         Page<UserDashboard> findAll =
                 userDashboardService.findDashboardsForPersonId(SecurityUtil.getCurrentAuthenticatedPerson().getId(),
-                        new PageRequest(page, WebConstants.PAGE_SIZE, translateSort()));
+                        PageRequest.of(page, WebConstants.PAGE_SIZE, translateSort()));
         return findAll.iterator();
     }
 

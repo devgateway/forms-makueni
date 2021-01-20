@@ -13,7 +13,7 @@ import org.devgateway.toolkit.web.security.SecurityConstants;
  */
 @AuthorizeInstantiation(SecurityConstants.Roles.ROLE_USER)
 public class SwaggerPage extends WebPage {
-    public static final String URL = "/swagger-ui.html";
+    public static final String URL = "/swagger-ui/";
 
     public SwaggerPage() {
         throw new RedirectToUrlException(URL);

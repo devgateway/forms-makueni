@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.devgateway.ocds.web.rest.controller.selector;
 
+import io.swagger.annotations.ApiOperation;
 import org.devgateway.ocds.persistence.mongo.Classification;
 import org.devgateway.ocds.persistence.mongo.repository.main.ClassificationRepository;
 import org.devgateway.ocds.web.rest.controller.GenericOCDSController;
@@ -22,8 +23,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.ApiOperation;
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class BidTypesSearchController extends GenericOCDSController {
             method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json")
     public List<Classification> bidTypes() {
 
-        return classificationRepository.findAll(new Sort(Direction.ASC, "description"));
+        return classificationRepository.findAll(Sort.by(Direction.ASC, "description"));
 
     }
 

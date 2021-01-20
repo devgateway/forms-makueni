@@ -30,6 +30,7 @@
     <logger name="org.apache.wicket.resource" level="WARN"/>
     <logger name="org.apache.wicket.Localizer" level="ERROR"/>
     <logger name="net.sf.ehcache.pool.sizeof.SizeOf" level="ERROR"/>
+    <logger name="io.swagger.models.parameters.AbstractSerializableParameter" level="ERROR"/>
 
     <logger name="org.pentaho.reporting.libraries.fonts" level="WARN"/>
     <logger name="org.pentaho.reporting.engine.classic" level="WARN"/>

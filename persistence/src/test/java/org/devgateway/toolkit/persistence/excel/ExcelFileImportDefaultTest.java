@@ -119,9 +119,15 @@ public class ExcelFileImportDefaultTest {
         public String[] getBeanDefinitionNames() {
             return new String[0];
         }
+        
 
         @Override
         public String[] getBeanNamesForType(ResolvableType resolvableType) {
+            return new String[0];
+        }
+
+        @Override
+        public String[] getBeanNamesForType(ResolvableType resolvableType, boolean b, boolean b1) {
             return new String[0];
         }
 
@@ -217,6 +223,11 @@ public class ExcelFileImportDefaultTest {
 
         @Override
         public Class<?> getType(String s) throws NoSuchBeanDefinitionException {
+            return null;
+        }
+
+        @Override
+        public Class<?> getType(String s, boolean b) throws NoSuchBeanDefinitionException {
             return null;
         }
 

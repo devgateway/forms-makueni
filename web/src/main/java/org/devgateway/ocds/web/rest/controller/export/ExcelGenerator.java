@@ -39,7 +39,7 @@ public class ExcelGenerator extends GenericOCDSController {
      */
     @Cacheable
     public byte[] getExcelDownload(final YearFilterPagingRequest filter) throws IOException {
-        PageRequest pageRequest = new PageRequest(filter.getPageNumber(), filter.getPageSize(),
+        PageRequest pageRequest = PageRequest.of(filter.getPageNumber(), filter.getPageSize(),
                 Sort.Direction.ASC, "id");
 
         List<Release> releases = mongoTemplate.find(

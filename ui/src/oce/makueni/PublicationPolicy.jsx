@@ -33,13 +33,37 @@ class Docs extends CRDPage {
             {reactStringReplace(this.t('publicationPolicy:ad:line1'), '$#$',
               (m, i) => {
                 if (i === 1) {
-                  return <a key={i} className="download-file" href="https://opencontracting.makueni.go.ke/api/ocds/package/all">{this.t('publicationPolicy:ad:line1:link1')}</a>;
+                  return (
+                    <a
+                      key={i}
+                      className="download-file"
+                      href="https://opencontracting.makueni.go.ke/api/ocds/package/all"
+                    >
+                      {this.t('publicationPolicy:ad:line1:link1')}
+                    </a>
+                  );
                 }
-                return <a key={i} className="download-file" href="https://opencontracting.makueni.go.ke/swagger-ui.html#/ocds-controller">{this.t('publicationPolicy:ad:line1:link2')}</a>;
+                return (
+                  <a
+                    key={i}
+                    className="download-file"
+                    href="https://opencontracting.makueni.go.ke/swagger-ui/#/ocds-controller"
+                  >
+                    {this.t('publicationPolicy:ad:line1:link2')}
+                  </a>
+                );
               })}
             <p />
             {reactStringReplace(this.t('publicationPolicy:ad:line2'), '$#$',
-              (m, i) => <a key={i} className="download-file" href="https://opencontracting.makueni.go.ke">opencontracting.makueni.go.ke</a>)}
+              (m, i) => (
+                <a
+                  key={i}
+                  className="download-file"
+                  href="https://opencontracting.makueni.go.ke"
+                >
+                  opencontracting.makueni.go.ke
+                </a>
+              ))}
             <p />
             {this.t('publicationPolicy:ad:line3')}
             <p />

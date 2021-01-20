@@ -76,7 +76,6 @@ public class ShareProcurementsAwardedAGPO extends GenericOCDSController {
                         .as("targetGroup"),
                 group("targetGroup").sum("value").as("value")
         );
-        System.out.print(agg);
         return releaseAgg(agg);
     }
 }

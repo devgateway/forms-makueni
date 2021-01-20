@@ -1,6 +1,5 @@
 package org.devgateway.toolkit.persistence.mongo.spring;
 
-import org.apache.commons.io.IOUtils;
 import org.bson.Document;
 import org.devgateway.ocds.persistence.mongo.DefaultLocation;
 import org.devgateway.ocds.persistence.mongo.Organization;
@@ -10,16 +9,11 @@ import org.devgateway.ocds.persistence.mongo.flags.FlagsConstants;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.ScriptOperations;
 import org.springframework.data.mongodb.core.index.CompoundIndexDefinition;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.index.TextIndexDefinition.TextIndexDefinitionBuilder;
-import org.springframework.data.mongodb.core.script.ExecutableMongoScript;
-import org.springframework.data.mongodb.core.script.NamedMongoScript;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.net.URL;
 
 import static org.devgateway.ocds.persistence.mongo.constants.MongoConstants.FieldNames.FLAGS_TOTAL_FLAGGED;
 
@@ -163,29 +157,6 @@ public abstract class AbstractMongoDatabaseConfiguration {
                 ).build());
 
         getLogger().info("Added extra Mongo indexes");
-
-        ScriptOperations scriptOps = getTemplate().scriptOps();
-
-        // add script to calculate the percentiles endpoint
-        URL scriptFile = getClass().getResource("/tenderBidPeriodPercentilesMongo.js");
-        try {
-            String scriptText = IOUtils.toString(scriptFile);
-            ExecutableMongoScript script = new ExecutableMongoScript(scriptText);
-            scriptOps.register(new NamedMongoScript("tenderBidPeriodPercentiles", script));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // add general mongo system helper methods
-        URL systemScriptFile = getClass().getResource("/mongoSystemScripts.js");
-        try {
-            String systemScriptFileText = IOUtils.toString(systemScriptFile);
-            ExecutableMongoScript script = new ExecutableMongoScript(systemScriptFileText);
-            scriptOps.execute(script);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
 }

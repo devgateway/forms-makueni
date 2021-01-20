@@ -176,7 +176,7 @@ public class OcdsController extends GenericOCDSController {
     @JsonView(Views.Public.class)
     public List<Release> ocdsReleases(@ModelAttribute @Valid final YearFilterPagingRequest releaseRequest) {
 
-        Pageable pageRequest = new PageRequest(releaseRequest.getPageNumber(), releaseRequest.getPageSize(),
+        Pageable pageRequest = PageRequest.of(releaseRequest.getPageNumber(), releaseRequest.getPageSize(),
                 Direction.ASC, "id"
         );
 
@@ -202,7 +202,7 @@ public class OcdsController extends GenericOCDSController {
     @Cacheable
     public Long ocdsReleasesCount(@ModelAttribute @Valid final YearFilterPagingRequest releaseRequest) {
 
-        Pageable pageRequest = new PageRequest(releaseRequest.getPageNumber(), releaseRequest.getPageSize(),
+        Pageable pageRequest = PageRequest.of(releaseRequest.getPageNumber(), releaseRequest.getPageSize(),
                 Direction.ASC, "id"
         );
 
@@ -228,7 +228,7 @@ public class OcdsController extends GenericOCDSController {
     public List<FlaggedRelease> flaggedOcdsReleases(
             @ModelAttribute @Valid final YearFilterPagingRequest releaseRequest) {
 
-        Pageable pageRequest = new PageRequest(releaseRequest.getPageNumber(), releaseRequest.getPageSize(),
+        Pageable pageRequest = PageRequest.of(releaseRequest.getPageNumber(), releaseRequest.getPageSize(),
                 Direction.DESC, MongoConstants.FieldNames.FLAGS_TOTAL_FLAGGED
         );
 

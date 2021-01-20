@@ -25,15 +25,15 @@ class Docs extends CRDPage {
               <a href="#!/portal-videos" className="list-group-item">
                 <h3 className="list-group-item-heading">{this.t('docs:portalVideos:heading')}</h3>
               </a>
-              <a href="/swagger-ui.html" className="list-group-item">
+              <a href="/swagger-ui/" className="list-group-item">
                 <h3 className="list-group-item-heading">{this.t('docs:allEndpoints:heading')}</h3>
                 <p className="list-group-item-text">{this.t('docs:allEndpoints:text')}</p>
               </a>
-              <a href="/swagger-ui.html#/makueni-data-controller" className="list-group-item">
+              <a href="/swagger-ui/#/makueni-data-controller" className="list-group-item">
                 <h3 className="list-group-item-heading">{this.t('docs:makueniEndpoints:heading')}</h3>
                 <p className="list-group-item-text">{this.t('docs:makueniEndpoints:text')}</p>
               </a>
-              <a href="/swagger-ui.html#/ocds-controller" className="list-group-item">
+              <a href="/swagger-ui/#/ocds-controller" className="list-group-item">
                 <h3 className="list-group-item-heading">{this.t('docs:ocdsEndpoints:heading')}</h3>
                 <p className="list-group-item-text">{this.t('docs:ocdsEndpoints:text')}</p>
               </a>

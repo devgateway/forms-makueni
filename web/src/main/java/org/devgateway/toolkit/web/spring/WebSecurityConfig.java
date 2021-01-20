@@ -104,7 +104,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.httpFirewall(allowUrlEncodedSlashHttpFirewall()).ignoring().
                 antMatchers("/", "/v2/api-docs/**", "/swagger-ui.html**", "/webjars/**", "/images/**",
                         "/configuration/**", "/swagger-resources/**", "/dashboard", "/languages/**",
-                        "/isAuthenticated", "/error",
+                        "/isAuthenticated", "/error", "/swagger-ui/**",
                         "/wicket/resource/**/*.ttf", "/wicket/resource/**/*.woff", "/corruption-risk",
                         SecurityUtil.getDisabledApiSecurity(adminSettingsRepository) ? "/api/**" : "/",
                         "/wicket/resource/**/*.woff2", "/wicket/resource/**/*.css.map"

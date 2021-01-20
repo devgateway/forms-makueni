@@ -17,6 +17,7 @@ import org.devgateway.ocds.web.rest.controller.request.GroupingFilterPagingReque
 import org.devgateway.ocds.web.rest.controller.request.MakueniFilterPagingRequest;
 import org.devgateway.ocds.web.rest.controller.request.YearFilterPagingRequest;
 import org.devgateway.toolkit.persistence.mongo.aggregate.CustomSortingOperation;
+import org.devgateway.toolkit.persistence.mongo.spring.MongoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,7 +160,7 @@ public abstract class GenericOCDSController {
         LocalDate now = LocalDate.now();
         LocalDate date = LocalDate.of(now.getYear() - years, now.getMonth(), now.getDayOfMonth());
 
-        return where(getTenderDateField()).gte(date);
+        return where(getTenderDateField()).gte(MongoUtil.getDateFromLocalDate(date));
     }
 
     /**

@@ -3,8 +3,6 @@
  */
 package org.devgateway.toolkit.web;
 
-import java.util.Collections;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.devgateway.ocds.web.rest.controller.request.GenericPagingRequest;
 import org.junit.Before;
@@ -19,6 +17,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -60,7 +60,7 @@ public abstract class AbstractSpringDataRestControllerTest extends AbstractWebTe
     public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
         this.persistentEntityResourceAssembler = mock(PersistentEntityResourceAssembler.class);
-        this.pageRequest = new PageRequest(0, GenericPagingRequest.DEFAULT_PAGE_SIZE);
+        this.pageRequest = PageRequest.of(0, GenericPagingRequest.DEFAULT_PAGE_SIZE);
 
         mockHttpServletRequestForResouceAssemblerSupport();
     }

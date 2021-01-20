@@ -1,11 +1,7 @@
 package org.devgateway.ocds.web.rest.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.github.fge.jackson.JsonLoader;
-import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import org.devgateway.ocds.persistence.mongo.Release;
 import org.devgateway.ocds.persistence.mongo.repository.main.ReleaseRepository;
-import org.devgateway.ocds.persistence.mongo.spring.OcdsSchemaValidatorService;
 import org.devgateway.ocds.persistence.mongo.spring.json.JsonImport;
 import org.devgateway.ocds.persistence.mongo.spring.json.ReleaseJsonImport;
 import org.devgateway.toolkit.web.AbstractWebTest;
@@ -30,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * @author idobre
+ * @Deprecated this must be rewritten using jocds validator
  * @since 6/1/16
  */
 public class ReleaseExportTest extends AbstractWebTest {
@@ -43,8 +40,8 @@ public class ReleaseExportTest extends AbstractWebTest {
 
     private MockMvc mockMvc;
 
-    @Autowired
-    private OcdsSchemaValidatorService ocdsSchemaValidator;
+//    @Autowired
+//    private OcdsSchemaValidatorService ocdsSchemaValidator;
 
 //    @Autowired
 //    private OcdsSchemaValidatorService ocdsSchemaAllRequiredValidator;
@@ -84,16 +81,17 @@ public class ReleaseExportTest extends AbstractWebTest {
                 andReturn();
         final String content = result.getResponse().getContentAsString();
 
-        final JsonNode jsonNodeResponse = JsonLoader.fromString(content);
-        final OcdsSchemaValidatorService.ProcessingReportWithNode processingReport =
-                ocdsSchemaValidator.validate(jsonNodeResponse);
+//        final JsonNode jsonNodeResponse = JsonLoader.fromString(content);
+//        final OcdsSchemaValidatorService.ProcessingReportWithNode processingReport =
+//                ocdsSchemaValidator.validate(jsonNodeResponse);
 
-        if (!processingReport.getReport().isSuccess()) {
-            for (ProcessingMessage processingMessage : processingReport.getReport()) {
-                logger.error(">>> processingMessage: \n" + processingMessage);
-            }
-        }
-        Assert.assertEquals("Is the release valid?", true, processingReport.getReport().isSuccess());
+//        if (!processingReport.getReport().isSuccess()) {
+//            for (ProcessingMessage processingMessage : processingReport.getReport()) {
+//                logger.error(">>> processingMessage: \n" + processingMessage);
+//            }
+//        }
+//        Assert.assertEquals("Is the release valid?", true, processingReport.getReport().isSuccess());
+        Assert.fail();
     }
 
     @Test
@@ -112,16 +110,17 @@ public class ReleaseExportTest extends AbstractWebTest {
                 andReturn();
         final String content = result.getResponse().getContentAsString();
 
-        final JsonNode jsonNodeResponse = JsonLoader.fromString(content);
-        final OcdsSchemaValidatorService.ProcessingReportWithNode processingReport =
-                ocdsSchemaValidator.validate(jsonNodeResponse);
-
-        if (!processingReport.getReport().isSuccess()) {
-            for (ProcessingMessage processingMessage : processingReport.getReport()) {
-                logger.error(">>> processingMessage: \n" + processingMessage);
-            }
-        }
-        Assert.assertEquals("Do we implement the entire standard (with all fields required)?",
-                true, processingReport.getReport().isSuccess());
+//        final JsonNode jsonNodeResponse = JsonLoader.fromString(content);
+//        final OcdsSchemaValidatorService.ProcessingReportWithNode processingReport =
+//                ocdsSchemaValidator.validate(jsonNodeResponse);
+//
+//        if (!processingReport.getReport().isSuccess()) {
+//            for (ProcessingMessage processingMessage : processingReport.getReport()) {
+//                logger.error(">>> processingMessage: \n" + processingMessage);
+//            }
+//        }
+//        Assert.assertEquals("Do we implement the entire standard (with all fields required)?",
+//                true, processingReport.getReport().isSuccess());
+        Assert.fail();
     }
 }

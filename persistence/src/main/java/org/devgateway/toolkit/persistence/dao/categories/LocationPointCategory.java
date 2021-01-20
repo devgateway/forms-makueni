@@ -1,7 +1,7 @@
 package org.devgateway.toolkit.persistence.dao.categories;
 
-import com.vividsolutions.jts.geom.Point;
 import org.hibernate.envers.Audited;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;

@@ -93,15 +93,15 @@ import org.devgateway.toolkit.forms.wicket.page.lists.form.ListPaymentVoucherPag
 import org.devgateway.toolkit.forms.wicket.page.lists.form.ListProcurementPlanPage;
 import org.devgateway.toolkit.forms.wicket.page.lists.form.ListProfessionalOpinionPage;
 import org.devgateway.toolkit.forms.wicket.page.lists.form.ListProjectPage;
-import org.devgateway.toolkit.forms.wicket.page.lists.form.ListTenderPage;
 import org.devgateway.toolkit.forms.wicket.page.lists.form.ListPurchaseRequisitionGroupPage;
+import org.devgateway.toolkit.forms.wicket.page.lists.form.ListTenderPage;
 import org.devgateway.toolkit.forms.wicket.page.lists.form.ListTenderQuotationEvaluationPage;
 import org.devgateway.toolkit.forms.wicket.page.user.EditUserPage;
 import org.devgateway.toolkit.forms.wicket.page.user.LogoutPage;
 import org.devgateway.toolkit.forms.wicket.styles.BaseStyles;
 import org.devgateway.toolkit.persistence.dao.Person;
-import org.devgateway.toolkit.web.security.SecurityConstants;
 import org.devgateway.toolkit.persistence.fm.service.DgFmService;
+import org.devgateway.toolkit.web.security.SecurityConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -598,7 +598,7 @@ public abstract class BasePage extends GenericWebPage<Void> implements DgFmFormC
                         new StringResourceModel("navbar.jminix", this, null))
                         .setIconType(FontAwesomeIconType.bug));
 
-                final MenuBookmarkablePageLink<HALRedirectPage> halBrowserLink =
+                final MenuBookmarkablePageLink<HalBrowserHALRedirectPage> halBrowserLink =
                         new MenuBookmarkablePageLink<HALRedirectPage>(HALRedirectPage.class, null,
                                 new StringResourceModel("navbar.halbrowser", this, null)) {
                             private static final long serialVersionUID = 1L;
