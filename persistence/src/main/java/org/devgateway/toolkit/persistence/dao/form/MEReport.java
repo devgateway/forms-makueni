@@ -115,6 +115,9 @@ public class MEReport extends AbstractImplTenderProcessMakueniEntity {
 
     @AccessType(AccessType.Type.PROPERTY)
     public BigDecimal getAmountBudgeted() {
+        if (getProject() == null) {
+            return null;
+        }
         return getProject().getAmountBudgeted();
     }
 

@@ -114,6 +114,8 @@
   mandatory: no
   enabled: yes
   visible: yes
+  visibleDeps:
+    - projectForm
 - name: meReportForm.tenderProcess.procurementPlan.department
   enabled: yes
   visible: yes
