@@ -225,13 +225,12 @@ public class AlertsManagerImpl implements AlertsManager {
         final AggregationOptions options = Aggregation.newAggregationOptions().allowDiskUse(true).build();
 
         final Aggregation aggregation = newAggregation(
-                project("_id", "department", "fiscalYear", "projects"),
-                unwind("projects"),
-                unwind("projects.tenderProcesses"),
-                match(where("projects.tenderProcesses._id").is(alert.getPurchaseReq().getId())),
-                unwind("projects.tenderProcesses.tender"),
-                match(where("projects.tenderProcesses.tender.closingDate").gte(new Date())),
-                match(where("projects.tenderProcesses.lastModifiedDate")
+                project("_id", "department", "fiscalYear", "tenderProcesses"),
+                unwind("tenderProcesses"),
+                match(where("tenderProcesses._id").is(alert.getPurchaseReq().getId())),
+                unwind("tenderProcesses.tender"),
+                match(where("tenderProcesses.tender.closingDate").gte(new Date())),
+                match(where("tenderProcesses.lastModifiedDate")
                         .gte(Date.from(alert.getLastChecked().atZone(ZoneId.systemDefault()).toInstant()))));
 
         final List<Document> documents = mongoTemplate.aggregate(
@@ -253,19 +252,18 @@ public class AlertsManagerImpl implements AlertsManager {
         }
         if (!alert.getItems().isEmpty()) {
             criteriaList.add(createFilterCriteria(
-                    "projects.tenderProcesses.tender.tenderItems.purchaseItem.planItem.item._id",
+                    "tenderProcesses.tender.tenderItems.purchaseItem.planItem.item._id",
                     alert.getItems()));
         }
 
         final Criteria criteria = new Criteria().orOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
 
         final Aggregation aggregation = newAggregation(
-                project("_id", "department", "fiscalYear", "projects"),
-                unwind("projects"),
-                unwind("projects.tenderProcesses"),
-                unwind("projects.tenderProcesses.tender"),
-                match(where("projects.tenderProcesses.tender.closingDate").gte(new Date())),
-                match(where("projects.tenderProcesses.lastModifiedDate")    // change to "lte" for local testing
+                project("_id", "department", "fiscalYear", "tenderProcesses"),
+                unwind("tenderProcesses"),
+                unwind("tenderProcesses.tender"),
+                match(where("tenderProcesses.tender.closingDate").gte(new Date())),
+                match(where("tenderProcesses.lastModifiedDate")    // change to "lte" for local testing
                         .gte(Date.from(alert.getLastChecked().atZone(ZoneId.systemDefault()).toInstant()))),
                 match(criteria));
 

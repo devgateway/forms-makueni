@@ -272,10 +272,9 @@ public class MakueniDataController extends GenericOCDSController {
         final AggregationOptions options = Aggregation.newAggregationOptions().allowDiskUse(true).build();
 
         final Aggregation aggregation = newAggregation(
-                unwind("projects"),
-                unwind("projects.tenderProcesses"),
-                unwind("projects.tenderProcesses.contract"),
-                group().count().as("count").sum("projects.tenderProcesses.contract.contractValue").as("value"));
+                unwind("tenderProcesses"),
+                unwind("tenderProcesses.contract"),
+                group().count().as("count").sum("tenderProcesses.contract.contractValue").as("value"));
 
         return mongoTemplate.aggregate(aggregation.withOptions(options), "procurementPlan", Document.class)
                 .getUniqueMappedResult();
@@ -455,7 +454,7 @@ public class MakueniDataController extends GenericOCDSController {
         }
 
         Criteria criteria = new Criteria();
-        criteria.orOperator(where("projects.tenderProcesses.tender.tenderTitle")
+        criteria.orOperator(where("tender.tenderTitle")
                         .regex(Pattern.compile(text, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)),
                 where("projects.projectTitle")
                         .regex(Pattern.compile(text, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)));
