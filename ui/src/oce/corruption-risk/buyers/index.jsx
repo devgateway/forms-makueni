@@ -58,11 +58,13 @@ class BuyerList extends PaginatedTable {
       buyerId: buyerIds,
     };
 
-    getBuyersTenderAndAwardCounts(buyerFilters)
-      .then(
-        ([tenders, awards]) => this.setState({ tenders, awards }),
-        () => this.setState({ tenders: {}, awards: {} }),
-      );
+    if (buyerFilters.buyerId.length > 0) {
+      getBuyersTenderAndAwardCounts(buyerFilters)
+        .then(
+          ([tenders, awards]) => this.setState({ tenders, awards }),
+          () => this.setState({ tenders: {}, awards: {} }),
+        );
+    }
   }
 
   render() {

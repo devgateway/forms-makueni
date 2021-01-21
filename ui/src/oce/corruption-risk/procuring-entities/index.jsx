@@ -63,11 +63,13 @@ class PEList extends PaginatedTable {
       procuringEntityId: ids,
     };
 
-    getTenderAndAwardCounts(peFilters)
-      .then(
-        ([tenders, awards]) => this.setState({ tenders, awards }),
-        () => this.setState({ tenders: {}, awards: {} }),
-      );
+    if (peFilters.procuringEntityId.length > 0) {
+      getTenderAndAwardCounts(peFilters)
+        .then(
+          ([tenders, awards]) => this.setState({ tenders, awards }),
+          () => this.setState({ tenders: {}, awards: {} }),
+        );
+    }
   }
 
   render() {
