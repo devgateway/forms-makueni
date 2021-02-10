@@ -105,7 +105,7 @@ public class ReleaseFlagNotificationService {
                             || !latestReleaseFlagHistory.get().getFlagged().contains(f))) {
                         addDepartmentFlagReleaseId(
                                 Long.valueOf(flaggedRelease.getBuyer().getId().replaceAll(
-                                        MongoConstants.OCDSSchemes.X_KE_OCMAKUENI + "-", "")),
+                                        MongoConstants.OCDSSchemes.X_KE_INTERNAL_SCHEMA + "-", "")),
                                 f, flaggedRelease.getId()
                         );
 

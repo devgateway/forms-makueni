@@ -9,7 +9,7 @@ import java.util.List;
  */
 public abstract class AbstractImplTenderProcessMakueniEntityServiceImpl
         <T extends AbstractImplTenderProcessMakueniEntity>
-        extends AbstractMakueniEntityServiceImpl<T> implements AbstractImplTenderProcessMakueniEntityService<T> {
+        extends AbstractTenderProcessEntityServiceImpl<T> implements AbstractImplTenderProcessMakueniEntityService<T> {
 
     @Override
     public <S extends T> S save(S entity) {

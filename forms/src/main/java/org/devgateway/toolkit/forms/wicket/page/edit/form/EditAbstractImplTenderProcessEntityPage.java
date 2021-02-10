@@ -33,4 +33,9 @@ public abstract class EditAbstractImplTenderProcessEntityPage<T extends Abstract
         addFormDocs();
         submitAndNext.setVisibilityAllowed(false);
     }
+
+    @Override
+    protected PageParameters parametersAfterSubmitAndNext() {
+        return getPageParameters();
+    }
 }

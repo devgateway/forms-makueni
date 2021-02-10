@@ -229,13 +229,15 @@ public class ImportProcurementPlanItemsPage extends BasePage {
             Workbook wb = WorkbookFactory.create(new ByteArrayInputStream(file.getContent().getBytes()));
             Sheet sh = wb.getSheetAt(0);
             for (Row r : sh) {
-                if (rn++ < 7 || r.getLastCellNum() == -1) {
+                if (rn++ < 7 || isEmptyRow(r)) {
                     continue;
                 }
                 PlanItem pi = new PlanItem();
-                Item item = itemService.findByCode(r.getCell(2).getStringCellValue());
+                String itemCode = toSingleLine(r.getCell(2).getStringCellValue());
+                Item item = itemService.findByCode(itemCode);
                 if (item == null) {
-                    item = createItem(r);
+                    String itemLabel = toSingleLine(r.getCell(3).getStringCellValue());
+                    item = createItem(itemCode, itemLabel);
                 }
                 pi.setItem(item);
                 pp.getPlanItems().add(pi);
@@ -270,6 +272,25 @@ public class ImportProcurementPlanItemsPage extends BasePage {
         }
 
         return pp;
+    }
+
+    private boolean isEmptyRow(Row r) {
+        short lastCellNum = r.getLastCellNum();
+        for (int col = r.getFirstCellNum(); col < lastCellNum; col++) {
+            Cell cell = r.getCell(col, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+            if (cell != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String toSingleLine(String value) {
+        if (value == null) {
+            return null;
+        }
+        return value.replace('\n', ' ')
+                .replace("\r", "");
     }
 
     private ProcurementMethod getProcurementMethod(Row r) {
@@ -311,10 +332,10 @@ public class ImportProcurementPlanItemsPage extends BasePage {
         return t;
     }
 
-    protected Item createItem(Row r) {
+    protected Item createItem(String code, String label) {
         Item item = new Item();
-        item.setCode(r.getCell(2).getStringCellValue());
-        item.setLabel(r.getCell(3).getStringCellValue());
+        item.setCode(code);
+        item.setLabel(label);
         return itemService.save(item);
     }
 

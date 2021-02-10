@@ -22,6 +22,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.core.request.handler.IPartialPageRequestHandler;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -32,6 +33,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -56,14 +58,18 @@ import org.devgateway.toolkit.forms.wicket.page.BasePage;
 import org.devgateway.toolkit.forms.wicket.styles.BlockUiJavaScript;
 import org.devgateway.toolkit.persistence.dao.GenericPersistable;
 import org.devgateway.toolkit.persistence.dao.ListViewItem;
+import org.devgateway.toolkit.persistence.validator.Severity;
 import org.devgateway.toolkit.persistence.service.BaseJpaService;
 import org.devgateway.toolkit.persistence.fm.service.DgFmService;
+import org.devgateway.toolkit.persistence.service.InvalidObjectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
 import java.io.Serializable;
+import java.util.stream.Collectors;
 
 /**
  * @author mpostelnicu Page used to make editing easy, extend to get easy access
@@ -137,6 +143,13 @@ public abstract class AbstractEditPage<T extends GenericPersistable & Serializab
 
     protected TextContentModal deleteFailedModal;
 
+    protected TextContentModal errorModal;
+
+    /**
+     * Set when the current object cannot be saved or created.
+     */
+    private boolean hasNonRecoverableError;
+
     @SpringBean
     private EntityManager entityManager;
 
@@ -189,6 +202,19 @@ public abstract class AbstractEditPage<T extends GenericPersistable & Serializab
         deleteButton.setLabel(new StringResourceModel("confirmDeleteModal.delete", this));
         modal.addButton(deleteButton);
 
+        return modal;
+    }
+
+    protected TextContentModal createErrorModal() {
+        final TextContentModal modal = new TextContentModal("errorModal", Model.of()) {
+            @Override
+            protected void onClose(IPartialPageRequestHandler target) {
+                super.onClose(target);
+                setResponsePage(listPageClass);
+            }
+        };
+        modal.addCloseButton();
+        modal.setUseCloseHandler(true);
         return modal;
     }
 
@@ -357,37 +383,59 @@ public abstract class AbstractEditPage<T extends GenericPersistable & Serializab
 
         @Override
         protected void onSubmit(final AjaxRequestTarget target) {
-            // save the object and go back to the list page
-            final T saveable = editForm.getModelObject();
+            try {
+                // save the object and go back to the list page
+                final T saveable = editForm.getModelObject();
 
-            beforeSaveEntity(saveable);
+                beforeSaveEntity(saveable);
 
-            // saves the entity and flushes the changes
-            jpaService.saveAndFlush(saveable);
-            getPageParameters().set(WebConstants.PARAM_ID, saveable.getId());
+                // saves the entity and flushes the changes
+                jpaService.saveAndFlush(saveable);
+                getPageParameters().set(WebConstants.PARAM_ID, saveable.getId());
 
-            // clears session and detaches all entities that are currently
-            // attached
-            entityManager.clear();
+                // clears session and detaches all entities that are currently
+                // attached
+                entityManager.clear();
 
-            // we flush the mondrian/wicket/reports cache to ensure it gets
-            // rebuilt
-            flushReportingCaches();
+                // we flush the mondrian/wicket/reports cache to ensure it gets
+                // rebuilt
+                flushReportingCaches();
 
-            afterSaveEntity(saveable);
+                afterSaveEntity(saveable);
 
-            // only redirect if redirect is true
-            if (redirectToSelf) {
-                // we need to close the blockUI if it's opened and enable all the buttons
-                target.appendJavaScript("$.unblockUI();");
-                target.appendJavaScript("$('#" + editForm.getMarkupId() + " button').prop('disabled', false);");
-            } else if (redirect) {
-                setResponsePage(getResponsePage(), getParameterPage());
+                // only redirect if redirect is true
+                if (redirectToSelf) {
+                    // we need to close the blockUI if it's opened and enable all the buttons
+                    target.appendJavaScript("$.unblockUI();");
+                    target.appendJavaScript("$('#" + editForm.getMarkupId() + " button').prop('disabled', false);");
+                } else if (redirect) {
+                    setResponsePage(getResponsePage(), getParameterPage());
+                }
+
+                // redirect is set back to true, which is the default behavior
+                redirect = true;
+                redirectToSelf = false;
+            } catch (InvalidObjectException e) {
+                hasNonRecoverableError = e.getViolations().stream().anyMatch(this::nonRecoverableError);
+                if (hasNonRecoverableError) {
+                    String errors = e.getViolations().stream()
+                            .filter(this::nonRecoverableError)
+                            .map(ConstraintViolation::getMessage)
+                            .collect(Collectors.joining("\n"));
+
+                    errorModal.setModelObject(errors);
+                    target.add(errorModal);
+
+                    errorModal.show(target);
+                } else {
+                    e.getViolations().forEach(v -> editForm.error(v.getMessage()));
+                    target.add(feedbackPanel);
+                }
             }
+        }
 
-            // redirect is set back to true, which is the default behavior
-            redirect = true;
-            redirectToSelf = false;
+        private boolean nonRecoverableError(ConstraintViolation<?> violation) {
+            return violation.getConstraintDescriptor().getPayload().contains(Severity.NonRecoverable.class);
         }
 
         /**
@@ -585,6 +633,13 @@ public abstract class AbstractEditPage<T extends GenericPersistable & Serializab
         // this fragment ensures extra buttons are added below the wicket:child section in child
         final Fragment fragment = new Fragment("extraButtons", "noButtons", this);
         editForm.add(fragment);
+
+        errorModal = createErrorModal();
+        add(errorModal);
+    }
+
+    public boolean hasNonRecoverableError() {
+        return hasNonRecoverableError;
     }
 
     @Override

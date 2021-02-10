@@ -186,6 +186,7 @@ public class DepartmentOverviewPage extends DataEntryBasePage {
                         }
                     };
             listTenderProcessWrapper.setOutputMarkupId(true);
+            listTenderProcessWrapper.setOutputMarkupPlaceholderTag(true);
 
 
             add(listTenderProcessWrapper);
@@ -371,6 +372,7 @@ public class DepartmentOverviewPage extends DataEntryBasePage {
                     download.initiate(target);
                 }
             };
+            excelButton.setEnabled(getProcurementPlan() != null);
             add(excelButton);
         }
     }

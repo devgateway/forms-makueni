@@ -157,17 +157,6 @@ public class EditPurchaseRequisitionGroupPage extends EditAbstractMakueniEntityP
     }
 
     @Override
-    protected PageParameters parametersAfterSubmitAndNext() {
-        final PageParameters pp = new PageParameters();
-        if (!ObjectUtils.isEmpty(editForm.getModelObject().getTenderProcess().getTender())) {
-            pp.set(WebConstants.PARAM_ID, PersistenceUtil.getNext(editForm
-                    .getModelObject().getTenderProcess().getTender()).getId());
-        }
-
-        return pp;
-    }
-
-    @Override
     protected Class<? extends Page> pageAfterSubmitAndNext() {
         return EditTenderPage.class;
     }

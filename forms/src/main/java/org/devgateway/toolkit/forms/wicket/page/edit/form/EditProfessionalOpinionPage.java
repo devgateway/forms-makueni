@@ -74,17 +74,5 @@ public class EditProfessionalOpinionPage extends EditAbstractTenderProcessMakuen
         tenderProcessService.save(tenderProcess);
     }
 
-    @Override
-    protected PageParameters parametersAfterSubmitAndNext() {
-        final PageParameters pp = new PageParameters();
-        if (!ObjectUtils.isEmpty(editForm.getModelObject().getTenderProcess().getAwardNotification())) {
-            pp.set(WebConstants.PARAM_ID,
-                    PersistenceUtil.getNext(
-                            editForm.getModelObject().getTenderProcess().getAwardNotification()).getId());
-        }
-
-        return pp;
-    }
-
 
 }

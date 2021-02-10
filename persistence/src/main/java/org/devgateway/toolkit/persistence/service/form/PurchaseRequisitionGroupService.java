@@ -9,7 +9,7 @@ import org.devgateway.toolkit.persistence.service.TextSearchableService;
  * @author mpostelnicu
  *
  */
-public interface PurchaseRequisitionGroupService extends AbstractMakueniEntityService<PurchaseRequisitionGroup>,
+public interface PurchaseRequisitionGroupService extends AbstractTenderProcessEntityService<PurchaseRequisitionGroup>,
         TextSearchableService<PurchaseRequisitionGroup> {
     PurchaseRequisitionGroup findByTenderProcess(TenderProcess tenderProcess);
 }

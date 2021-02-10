@@ -20,6 +20,7 @@ import org.devgateway.toolkit.forms.wicket.events.EditingDisabledEvent;
 import org.devgateway.toolkit.forms.wicket.page.overview.status.StatusOverviewPage;
 import org.devgateway.toolkit.persistence.dao.DBConstants;
 import org.devgateway.toolkit.persistence.dao.categories.Department;
+import org.devgateway.toolkit.persistence.dao.form.AbstractMakueniEntity;
 import org.devgateway.toolkit.persistence.dao.form.AbstractTenderProcessMakueniEntity;
 import org.devgateway.toolkit.persistence.dao.form.AwardAcceptance;
 import org.devgateway.toolkit.persistence.dao.form.AwardNotification;
@@ -32,6 +33,7 @@ import org.devgateway.toolkit.persistence.dao.form.TenderQuotationEvaluation;
 import org.devgateway.toolkit.persistence.service.form.TenderProcessService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
@@ -195,5 +197,16 @@ public abstract class EditAbstractTenderProcessMakueniEntityPage<T extends Abstr
         } else {
             return getPage().getClass();
         }
+    }
+
+    @Override
+    protected PageParameters parametersAfterSubmitAndNext() {
+        final PageParameters pp = new PageParameters();
+        AbstractMakueniEntity nextStatusable = tenderProcessService.getNextStatusable(
+                editForm.getModelObject().getTenderProcess(), editForm.getModelObject().getClass());
+        if (!ObjectUtils.isEmpty(nextStatusable)) {
+            pp.set(WebConstants.PARAM_ID, nextStatusable.getId());
+        }
+        return pp;
     }
 }

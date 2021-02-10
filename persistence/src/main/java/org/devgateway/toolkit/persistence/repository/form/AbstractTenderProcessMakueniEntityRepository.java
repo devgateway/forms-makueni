@@ -19,4 +19,12 @@ public interface AbstractTenderProcessMakueniEntityRepository<T extends Abstract
     @Query("select c from  #{#entityName} c "
             + " where c.tenderProcess.procurementPlan.fiscalYear = :fiscalYear")
     List<T> findByFiscalYear(@Param("fiscalYear") FiscalYear fiscalYear);
+
+    @Query("select count(c) "
+            + "from #{#entityName} c "
+            + "where c.id <> :id "
+            + "and c.tenderProcess = :tenderProcess")
+    long countByTenderProcess(
+            @Param("id") Long id,
+            @Param("tenderProcess") TenderProcess tenderProcess);
 }

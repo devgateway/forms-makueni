@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class ProfessionalOpinionServiceImpl extends AbstractMakueniEntityServiceImpl<ProfessionalOpinion>
+public class ProfessionalOpinionServiceImpl extends AbstractTenderProcessEntityServiceImpl<ProfessionalOpinion>
         implements ProfessionalOpinionService {
 
     @Autowired

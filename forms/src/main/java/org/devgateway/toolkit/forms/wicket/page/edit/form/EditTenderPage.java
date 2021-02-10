@@ -177,18 +177,6 @@ public class EditTenderPage extends EditAbstractTenderProcessMakueniEntityPage<T
         editForm.add(procuringEntityAddress);
     }
 
-    @Override
-    protected PageParameters parametersAfterSubmitAndNext() {
-        final PageParameters pp = new PageParameters();
-        if (!ObjectUtils.isEmpty(editForm.getModelObject().getTenderProcess().getTenderQuotationEvaluation())) {
-            pp.set(WebConstants.PARAM_ID,
-                    PersistenceUtil.getNext(editForm.getModelObject().getTenderProcess()
-                            .getTenderQuotationEvaluation()).getId());
-        }
-
-        return pp;
-    }
-
     private IValidator<String> tenderDocOrTenderLinkRequiredValidator() {
         final StringValue id = getPageParameters().get(WebConstants.PARAM_ID);
         return new TenderDocumentValidator(id.toLong(-1));

@@ -1,8 +1,7 @@
 package org.devgateway.toolkit.persistence.service;
 
-import static java.util.stream.Collectors.joining;
-
 import org.devgateway.toolkit.persistence.dao.GenericPersistable;
+import org.devgateway.toolkit.persistence.validator.groups.HighLevel;
 import org.devgateway.toolkit.persistence.repository.norepository.BaseJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,8 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
+import javax.validation.groups.Default;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
@@ -124,11 +123,9 @@ public abstract class BaseJpaServiceImpl<T extends GenericPersistable & Serializ
     }
 
     private <S extends T> void assertEntityIsValid(S entity) {
-        Set<ConstraintViolation<S>> violations = validator.validate(entity);
+        Set<ConstraintViolation<S>> violations = validator.validate(entity, Default.class, HighLevel.class);
         if (!violations.isEmpty()) {
-            throw new ValidationException("Entity is not valid. Constraint violations:\n" + violations.stream()
-                    .map(Object::toString)
-                    .collect(joining("\n")));
+            throw new InvalidObjectException(new HashSet<>(violations));
         }
     }
 

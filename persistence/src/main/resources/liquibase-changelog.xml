@@ -1447,4 +1447,21 @@
             alter table contract drop constraint fk1thmycnkpijd9t97s05q88ohy;
         </sql>
     </changeSet>
+
+    <changeSet id="OCMAKU-874" author="Octavian Ciubotaru">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="category"/>
+        </preConditions>
+        <sql><![CDATA[
+            UPDATE category
+            SET code=REPLACE(REPLACE(code, CHR(10), ' '), CHR(13), '')
+            WHERE dtype = 'Item'
+              AND STRPOS(code, CHR(10)) > 0;
+
+            UPDATE category
+            SET label=REPLACE(REPLACE(label, CHR(10), ' '), CHR(13), '')
+            WHERE dtype = 'Item'
+              AND STRPOS(label, CHR(10)) > 0;
+        ]]></sql>
+    </changeSet>
 </databaseChangeLog>

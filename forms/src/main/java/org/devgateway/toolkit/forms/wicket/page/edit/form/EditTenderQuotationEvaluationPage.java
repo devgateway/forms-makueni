@@ -77,16 +77,4 @@ public class EditTenderQuotationEvaluationPage extends EditAbstractTenderProcess
         tenderProcess.removeTenderQuotationEvaluation(tenderQuotationEvaluation);
         tenderProcessService.save(tenderProcess);
     }
-
-    @Override
-    protected PageParameters parametersAfterSubmitAndNext() {
-        final PageParameters pp = new PageParameters();
-        if (!ObjectUtils.isEmpty(editForm.getModelObject().getTenderProcess().getProfessionalOpinion())) {
-            pp.set(WebConstants.PARAM_ID,
-                    PersistenceUtil.getNext(editForm.getModelObject().getTenderProcess()
-                            .getProfessionalOpinion()).getId());
-        }
-
-        return pp;
-    }
 }

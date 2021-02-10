@@ -6,6 +6,6 @@ import org.devgateway.toolkit.persistence.dao.form.TenderProcess;
 /**
  * @author gmutuhu
  */
-public interface AwardNotificationService extends AbstractMakueniEntityService<AwardNotification> {
+public interface AwardNotificationService extends AbstractTenderProcessEntityService<AwardNotification> {
     AwardNotification findByTenderProcess(TenderProcess tenderProcess);
 }

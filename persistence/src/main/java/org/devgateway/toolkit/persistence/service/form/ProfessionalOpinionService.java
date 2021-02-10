@@ -7,7 +7,7 @@ import org.devgateway.toolkit.persistence.dao.form.TenderProcess;
  * @author idobre
  * @since 2019-04-24
  */
-public interface ProfessionalOpinionService extends AbstractMakueniEntityService<ProfessionalOpinion> {
+public interface ProfessionalOpinionService extends AbstractTenderProcessEntityService<ProfessionalOpinion> {
 
     ProfessionalOpinion findByTenderProcess(TenderProcess tenderProcess);
 

@@ -73,18 +73,4 @@ public class EditAwardNotificationPage extends EditAbstractTenderReqMakueniEntit
         tenderProcessService.save(tenderProcess);
     }
 
-    @Override
-    protected PageParameters parametersAfterSubmitAndNext() {
-        final PageParameters pp = new PageParameters();
-        if (!ObjectUtils.isEmpty(editForm.getModelObject().getTenderProcess().getAwardAcceptance())) {
-            pp.set(WebConstants.PARAM_ID,
-                    PersistenceUtil.getNext(
-                            editForm.getModelObject().getTenderProcess().getAwardAcceptance()).getId());
-        }
-
-        return pp;
-    }
-
-
-
 }

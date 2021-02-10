@@ -71,6 +71,9 @@
   mandatory: no
   enabled: yes
   visible: yes
+  visibleDeps:
+    - contractForm
+    - professionalOpinionForm
 - name: awardAcceptanceForm.tenderNumber
   mandatory: no
   enabled: yes

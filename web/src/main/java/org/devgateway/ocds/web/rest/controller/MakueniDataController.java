@@ -320,8 +320,17 @@ public class MakueniDataController extends GenericOCDSController {
     @Cacheable
     public List<Document> getItems() {
         final AggregationOptions options = Aggregation.newAggregationOptions().allowDiskUse(true).build();
-        final Aggregation aggregation = newAggregation(project("planItems"),
-                unwind("planItems"), project("planItems.item"), group("item"));
+        final Aggregation aggregation = newAggregation(
+                project("tenderProcesses"),
+                unwind("tenderProcesses"),
+                project("tenderProcesses.tender"),
+                unwind("tender"),
+                project("tender.tenderItems"),
+                unwind("tenderItems"),
+                group("tenderItems.nonNullPlanItem.item")
+                        .first("tenderItems.nonNullPlanItem.item.label").as("label"),
+                sort(Sort.by(Sort.Direction.ASC, "label"))
+        );
 
         return mongoTemplate.aggregate(aggregation.withOptions(options), "procurementPlan", Document.class)
                 .getMappedResults();

@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class TenderServiceImpl extends AbstractMakueniEntityServiceImpl<Tender> implements TenderService {
+public class TenderServiceImpl extends AbstractTenderProcessEntityServiceImpl<Tender> implements TenderService {
 
     @Autowired
     private TenderRepository tenderRepository;

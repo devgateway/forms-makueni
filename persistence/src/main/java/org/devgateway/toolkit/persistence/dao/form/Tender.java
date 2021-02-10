@@ -11,6 +11,9 @@ import org.devgateway.toolkit.persistence.dao.categories.ProcuringEntity;
 import org.devgateway.toolkit.persistence.dao.categories.TargetGroup;
 import org.devgateway.toolkit.persistence.excel.annotation.ExcelExport;
 import org.devgateway.toolkit.persistence.spring.PersistenceUtil;
+import org.devgateway.toolkit.persistence.validator.Severity;
+import org.devgateway.toolkit.persistence.validator.groups.HighLevel;
+import org.devgateway.toolkit.persistence.validator.validators.UniqueTenderProcessEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
@@ -48,6 +51,8 @@ import java.util.function.Consumer;
 @UniqueConstraint(columnNames = "tender_process_id"))
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Form(featureName = "tenderForm")
+@UniqueTenderProcessEntity(groups = HighLevel.class, payload = Severity.NonRecoverable.class,
+        message = "{org.devgateway.toolkit.persistence.dao.form.UniqueTender.message}")
 public class Tender extends AbstractTenderProcessMakueniEntity implements TitleAutogeneratable {
     @ExcelExport(useTranslation = true, name = "Tender ID")
     @Column(length = DBConstants.STD_DEFAULT_TEXT_LENGTH)

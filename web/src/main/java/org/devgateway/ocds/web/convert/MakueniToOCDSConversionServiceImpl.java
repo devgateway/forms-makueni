@@ -121,7 +121,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.devgateway.ocds.persistence.mongo.constants.MongoConstants.MONGO_DECIMAL_SCALE;
-import static org.devgateway.ocds.persistence.mongo.constants.MongoConstants.OCDSSchemes.X_KE_OCMAKUENI;
+import static org.devgateway.ocds.persistence.mongo.constants.MongoConstants.OCDSSchemes.X_KE_INTERNAL_SCHEMA;
 
 @Service
 @Transactional(readOnly = true)
@@ -751,16 +751,16 @@ public class MakueniToOCDSConversionServiceImpl implements MakueniToOCDSConversi
     }
 
     public Identifier convertToOrgIdentifier(Identifier identifier) {
-        safeSet(identifier::setScheme, () -> X_KE_OCMAKUENI);
-        safeSet(identifier::setUri, () -> serverURL + "/api/ocds/organization/all?scheme=" + X_KE_OCMAKUENI,
+        safeSet(identifier::setScheme, () -> X_KE_INTERNAL_SCHEMA);
+        safeSet(identifier::setUri, () -> serverURL + "/api/ocds/organization/all?scheme=" + X_KE_INTERNAL_SCHEMA,
                 URI::create);
         safeSet(identifier::setId, () -> identifier, this::convertIdentifierToId);
         return identifier;
     }
 
     public Identifier convertToLocalIdentifier(Identifier identifier) {
-        safeSet(identifier::setScheme, () -> X_KE_OCMAKUENI);
-        safeSet(identifier::setUri, () -> serverURL + "/api/ocds/organization/all?scheme=" + X_KE_OCMAKUENI,
+        safeSet(identifier::setScheme, () -> X_KE_INTERNAL_SCHEMA);
+        safeSet(identifier::setUri, () -> serverURL + "/api/ocds/organization/all?scheme=" + X_KE_INTERNAL_SCHEMA,
                 URI::create);
         safeSet(identifier::setId, () -> identifier, this::convertIdentifierToId);
         return identifier;

@@ -10,6 +10,6 @@ import java.util.List;
  * @since 2019-05-21
  */
 public interface AbstractImplTenderProcessMakueniEntityService<T extends AbstractImplTenderProcessMakueniEntity>
-        extends AbstractMakueniEntityService<T> {
+        extends AbstractTenderProcessEntityService<T> {
     List<T> findByTenderProcess(TenderProcess tenderProcess);
 }
