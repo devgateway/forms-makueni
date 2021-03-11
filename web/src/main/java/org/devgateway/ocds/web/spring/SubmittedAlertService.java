@@ -131,7 +131,7 @@ public class SubmittedAlertService {
     private DepartmentService departmentService;
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    private SendEmailService emailSendingService;
 
     @Value("${serverURL}")
     private String serverURL;
@@ -203,7 +203,7 @@ public class SubmittedAlertService {
             msg.setText(createDepartmentContent(department, notifyMap), true);
         };
         try {
-            javaMailSender.send(messagePreparator);
+            emailSendingService.send(messagePreparator);
         } catch (MailException e) {
             logger.error("Failed to send validator notification email for: " + strings, e);
             throw e;
