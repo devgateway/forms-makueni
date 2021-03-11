@@ -115,7 +115,7 @@ public class SendEmailServiceImpl implements SendEmailService {
                 + "At login, you will be prompted to change your password to one of your choice.\n\n" + "Thank you,\n"
                 + "DG Team");
         try {
-            javaMailSender.send(msg);
+            send(msg);
         } catch (MailException e) {
             e.printStackTrace();
         }
@@ -162,7 +162,7 @@ public class SendEmailServiceImpl implements SendEmailService {
         };
 
         try {
-            javaMailSender.send(messagePreparator);
+            send(messagePreparator);
         } catch (MailException e) {
             logger.error("Failed to send new account email to userId=" + person.getId(), e);
         }
