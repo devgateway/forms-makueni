@@ -4,7 +4,6 @@ import com.google.common.io.ByteSource;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.types.ObjectId;
 import org.devgateway.ocds.persistence.mongo.Document;
 import org.devgateway.toolkit.persistence.dao.FileMetadata;
@@ -45,20 +44,14 @@ public class MongoFileStorageServiceImpl implements MongoFileStorageService {
         downloadURL = serverURL + DOWNLOAD_PREFIX;
     }
 
-    public String computeFileMd5(FileMetadata fileMetadata) {
-        return DigestUtils.md5Hex(fileMetadata.getContent().getBytes());
-    }
-
     public FileMetadata storeFile(final FileMetadata fileMetadata) {
         try {
-            if (ObjectUtils.isEmpty(fileMetadata)
-                    || ObjectUtils.isEmpty(fileMetadata.getContent())
-                    || ObjectUtils.isEmpty(fileMetadata.getContent().getBytes())) {
+            if (ObjectUtils.isEmpty(fileMetadata)) {
                 return null;
             }
 
             final DBObject metaData = new BasicDBObject();
-            String md5 = computeFileMd5(fileMetadata);
+            String md5 = fileMetadata.getMd5();
             GridFSFile existingFile = gridFsOperations.findOne(new Query(Criteria.where("md5").is(md5)
                     .and("filename").is(fileMetadata.getName())));
             ObjectId objId;
