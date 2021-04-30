@@ -3,16 +3,6 @@
 /* general styles for dashboards
 -------------------------------------------------- */
 
-.container-fluid {
-    padding-left: 0 !important;
-}
-
-@media screen and (max-width: 767px) {
-    .container-fluid {
-        padding-right: 0;
-    }
-}
-
 [class*="col-"].no-padding {
     padding-left: 0 !important;
     padding-right: 0 !important;
@@ -43,7 +33,7 @@
     overflow-y: auto;
     padding: 20px 30px 30px 30px;
     position: fixed;
-    top: 60px;
+    top: 75px;
     bottom: 0;
 }
 
@@ -183,11 +173,6 @@
     background: #ffffff;
     margin: 0;
     padding: 25px 25px 25px 25px;
-}
-@media screen and (max-width: 1024px){
-  .header{
-    padding-top: 80px;
-  }
 }
 
 .header h2 {
@@ -827,7 +812,6 @@
 }
 
 .tender-header .tender-label {
-    float: left;
     font-size: 12px;
     text-transform: uppercase;
 }
@@ -855,6 +839,7 @@
 
 .tender-info ul {
     padding-left: 0;
+    margin-bottom: 0;
 }
 
 .collapse-content.tender .tender-info ul li {
@@ -897,6 +882,10 @@
   float: right;
   line-height: 18px;
   min-width: 75px;
+}
+
+.tender-info {
+  overflow: auto;
 }
 
 .borderless tr td {
