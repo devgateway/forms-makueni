@@ -140,23 +140,11 @@ const Alerts = (props) => {
 
               : (
                 <div>
+                  <h4 className="sub-title">{t('alerts:alertPreferences')}</h4>
+                  <h5 className="sub-title">{t('alerts:onNewTender')}</h5>
                   <div className="row">
-                    <div className="col-md-12">
-                      <h4 className="sub-title">{t('alerts:alertPreferences')}</h4>
-                    </div>
-                    <div className="col-md-2" />
-                    <div className="col-md-5">
+                    <div className="col-md-6">
                       <ControlLabel>{t('alerts:alertsForTendersFromDepartment')}</ControlLabel>
-                    </div>
-                    <div className="col-md-5">
-                      <ControlLabel>{t('alerts:alertsForItemsFromDepartment')}</ControlLabel>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-2">
-                      {t('alerts:onNewTender')}
-                    </div>
-                    <div className="col-md-5">
                       <Typeahead
                         id="departments"
                         onChange={(selected) => handleChange({
@@ -175,7 +163,8 @@ const Alerts = (props) => {
                         highlightOnlyResult
                       />
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-6">
+                      <ControlLabel>{t('alerts:alertsForItemsFromDepartment')}</ControlLabel>
                       <Typeahead
                         id="items"
                         onChange={(selected) => handleChange({

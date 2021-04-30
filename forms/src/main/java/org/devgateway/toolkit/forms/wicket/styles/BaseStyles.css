@@ -38,7 +38,7 @@ body {
      * @see: bootstrap::navbar.less
      */
     min-height: 50px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     height: 60px;
     overflow: visible;
     position: fixed;
@@ -97,30 +97,9 @@ body {
     min-height: 20em;
     padding-bottom: 15px;
 }
-@media (min-width: 1025px){
-    .mainContainer{
-        margin-top: 5%;
-    }
-}
-@media (max-width: 1024px){
-    .mainContainer{
-        margin-top: 0;
-    }
-}
-@media (max-width: 768px){
-    .mainContainer{
-        margin-top: 0;
-    }
-}
-@media (max-width:412px){
-    .mainContainer{
-        margin-top: 25%;
-    }
-}
-
-@media (max-width: 767px){
-    .navbar-inverse .navbar-collapse{
-        margin-top: 30px;
+@media (min-width: 768px) {
+    .mainContainer {
+        margin-top: 75px;
     }
 }
 
@@ -692,14 +671,16 @@ hr.edit-separator {
 
 .p-t-xs { padding-top: .25em; }
 
-.row.display-flex {
-    display: flex;
-    flex-wrap: wrap;
-}
+@media (min-width: 767px) {
+    .row.display-flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
-.row.display-flex > [class*='col-'] {
-    display: flex;
-    flex-direction: column;
+    .row.display-flex > [class*='col-'] {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .btn.text-left {
