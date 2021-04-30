@@ -282,11 +282,11 @@ public class StatusOverviewServiceImpl implements StatusOverviewService {
                 return DBConstants.Status.TERMINATED;
             }
 
-            if (statuses.size() == 0 || (sizeCheck != 0 && statuses.size() != sizeCheck)) {
+            if (statuses.size() == 0) {
                 return DBConstants.Status.NOT_STARTED;
             }
 
-            if (statuses.contains(DBConstants.Status.DRAFT)) {
+            if (statuses.contains(DBConstants.Status.DRAFT) || (sizeCheck != 0 && statuses.size() != sizeCheck)) {
                 return DBConstants.Status.DRAFT;
             }
 

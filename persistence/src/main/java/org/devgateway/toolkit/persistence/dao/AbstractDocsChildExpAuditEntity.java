@@ -1,5 +1,7 @@
 package org.devgateway.toolkit.persistence.dao;
 
+import org.devgateway.toolkit.persistence.dao.form.ProfessionalOpinionItem;
+import org.devgateway.toolkit.persistence.dao.form.PurchRequisition;
 import org.devgateway.toolkit.persistence.excel.annotation.ExcelExport;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -24,7 +26,8 @@ public abstract class AbstractDocsChildExpAuditEntity<P extends AbstractAuditabl
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<FileMetadata> formDocs;
 
-    @ExcelExport(useTranslation = true, name = "Approved Date")
+    @ExcelExport(useTranslation = true, name = "Approved Date",
+            onlyForClass = { PurchRequisition.class, ProfessionalOpinionItem.class })
     private Date approvedDate;
 
     public Set<FileMetadata> getFormDocs() {

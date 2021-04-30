@@ -35,12 +35,13 @@ import java.util.stream.Collectors;
 public abstract class AbstractMakueniEntity extends AbstractStatusAuditableEntity
         implements Labelable, SingleFileMetadatable, Lockable {
     @ExcelExport(useTranslation = true,
-            onlyForClass = {ProcurementPlan.class, Project.class, ProfessionalOpinion.class, InspectionReport.class,
-                    MEReport.class, AdministratorReport.class})
+            onlyForClass = {ProcurementPlan.class, Project.class, InspectionReport.class,
+                    MEReport.class, AdministratorReport.class, PMCReport.class, PaymentVoucher.class})
     private Date approvedDate;
 
     @ExcelExport(justExport = true, useTranslation = true, onlyForClass = {ProcurementPlan.class, CabinetPaper.class,
-            TenderProcess.class, Tender.class, TenderQuotationEvaluation.class, ProfessionalOpinion.class},
+            TenderProcess.class, Tender.class, TenderQuotationEvaluation.class, PaymentVoucher.class, PMCReport.class,
+            AdministratorReport.class, InspectionReport.class, MEReport.class},
             name = "Documents")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
