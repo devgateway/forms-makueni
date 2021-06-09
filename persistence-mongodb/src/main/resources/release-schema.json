@@ -1246,8 +1246,7 @@
             "$ref": "#/definitions/Identifier"
           },
           "title": "Additional identifiers",
-          "uniqueItems": true,
-          "wholeListMerge": true,
+c          "wholeListMerge": true,
           "description": "(Deprecated outside the parties section) A list of additional / supplemental identifiers for the organization, using the [organization identifier guidance](http://standard.open-contracting.org/latest/en/schema/identifiers/). This could be used to provide an internally used identifier for this organization in addition to the primary legal entity identifier."
         },
         "contactPoint": {

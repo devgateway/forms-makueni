@@ -4,6 +4,7 @@
       "properties": {
         "delayed": {
           "title": "Milestone Delayed",
+          "description": "True if this milestone has been delayed",
           "type": [
             "boolean",
             "null"
@@ -11,6 +12,7 @@
         },
         "authorizePayment": {
           "title": "Payment Authorization",
+          "description": "True if this milestone involves a payment authorization",
           "type": [
             "boolean",
             "null"

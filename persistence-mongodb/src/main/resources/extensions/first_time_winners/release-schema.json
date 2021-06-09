@@ -4,6 +4,7 @@
       "properties": {
         "firstTimeWinner": {
           "title": "First Time Winner",
+          "description": "First Time Winner of an award",
           "type": [
             "boolean",
             "null"

@@ -4,6 +4,7 @@
       "properties": {
         "contractor": {
           "title": "Contractor",
+          "description": "Contract Contractor",
           "$ref": "#/definitions/OrganizationReference"
         }
       }

@@ -4,6 +4,7 @@
       "properties": {
         "fiscalYear": {
           "title": "Fiscal Year",
+          "description": "The Fiscal Year",
           "type": [
             "string",
             "null"
